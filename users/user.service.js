@@ -3,8 +3,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('_helpers/db');
 const User = db.User;
-const os = require('os');
-const { getClientIp } = require('request-ip');
 const Audit = db.Audit;
 module.exports = {
     authenticate,
@@ -25,7 +23,7 @@ async function authenticate({ username, password }) {
         const loginDate = new Date();
         let audit = new Audit();
         audit.userName = username;
-        audit.clientIp =JSON.stringify(os.networkInterfaces());
+        audit.clientIp =ip.address();
         audit.login = loginDate;
 
         await audit.save();
